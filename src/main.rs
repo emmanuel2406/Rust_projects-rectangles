@@ -22,4 +22,19 @@ fn main() {
     println!("rect1 is {rect1:#?}"); // prints to stdout
     // dbg!(&rect1); // prints to stderr but uses pretty print by default
     println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+
+
+    // testing out sort_by_key
+    // sort_by_key needs a closure with an FnMut trait since it calls it multiple times, once for every elt in the list
+    let mut list = [
+        Rectangle { width: 10, height: 1 },
+        Rectangle { width: 2, height: 3 },
+        Rectangle { width: 8, height: 7 },
+    ];
+    let mut num_sort_operations = 0;
+    list.sort_by_key(|r| {
+        num_sort_operations += 1; // We must make sure to not use closures with the FnOnce trait that captures values
+        r.width
+    });
+    println!("{list:#?} sorted in {num_sort_operations} operations");
 }
